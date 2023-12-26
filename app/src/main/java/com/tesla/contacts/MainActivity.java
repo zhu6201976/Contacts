@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         // 检查权限
         this.checkAndRequestPermissions();
 
-        // this.startServer();
+        this.startServer();
     }
 
     private void initView() {
