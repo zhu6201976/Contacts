@@ -12,6 +12,12 @@
         android:hint="/sdcard/Download/contacts.txt"
         android:text="contacts.txt" />
 
+    <Button
+        android:id="@+id/bt_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="clear"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/bt_import"
