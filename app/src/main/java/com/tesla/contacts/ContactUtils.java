@@ -40,7 +40,7 @@ public class ContactUtils {
             }
             cursor.close();
         }
-
+        Log.i(TAG, "clearContacts: finish");
         Toast.makeText(context, "clearContacts finish", Toast.LENGTH_SHORT).show();
     }
 
@@ -106,6 +106,7 @@ public class ContactUtils {
             }
             i += 1;
         }
+        Log.i(TAG, "addContact: finish");   
         Toast.makeText(context, "addContact finish", Toast.LENGTH_SHORT).show();
     }
 }

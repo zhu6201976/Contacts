@@ -11,9 +11,9 @@ import fi.iki.elonen.NanoHTTPD;
 /**
  * https://github.com/NanoHttpd/nanohttpd
  * 服务成功启动
- * 由于手机连的网络是TengZhan 与电脑WIFI不同网段 --> 可以用山石VPN解决
- * 手机浏览器正常访问 http://localhost:8080/ 手机局域网 http://172.16.200.149:8080成功访问
- * 电脑WIFI无法访问
+ * 由于手机连的WIFI是TengZhan 与电脑不同网络 山石VPN无法解决
+ * 手机浏览器正常访问 http://localhost:8080/ 手机局域网正常访问 http://172.16.200.149:8080
+ * 电脑网络无法访问 但数据在电脑网络
  */
 public class App extends NanoHTTPD {
     public App() throws IOException {

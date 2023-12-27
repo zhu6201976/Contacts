@@ -32,14 +32,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 检查权限
+        this.checkAndRequestPermissions();
+
         this.initView();
 
         this.initData();
 
-        // 检查权限
-        this.checkAndRequestPermissions();
+        // this.startServer();
 
-        this.startServer();
+        // 自动触发clear + addContact
+        contactUtils.clearContacts(MainActivity.this);
+        contactUtils.addContact(MainActivity.this, et_fpath.getText().toString().trim());
+
+        // 发送收起重启广播 无效 可以直接adb命令发广播 adb shell am broadcast --user 0 android.intent.action.BOOT_COMPLETED
+        // RebootUtil.sendRebootBroadcast(MainActivity.this);
+        // RebootUtil.rebootDevice(MainActivity.this);
     }
 
     private void initView() {
@@ -54,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt_import).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String fileName = et_fpath.getText().toString().trim();
-                contactUtils.addContact(MainActivity.this, fileName);
+                contactUtils.addContact(MainActivity.this, et_fpath.getText().toString().trim());
             }
         });
         findViewById(R.id.bt_extract).setOnClickListener(new View.OnClickListener() {
