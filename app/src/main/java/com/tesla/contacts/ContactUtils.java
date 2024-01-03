@@ -62,6 +62,7 @@ public class ContactUtils {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Log.i(TAG, e.toString());
         } finally {
             if (reader != null) {
                 try {
@@ -81,7 +82,9 @@ public class ContactUtils {
         ContentResolver contentResolver = context.getContentResolver();
         File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, fileName);
-        ArrayList<String> phoneList = this.readLines(file.getAbsolutePath());
+        // 非root用户adb push后默认root权限无法读取
+        // ArrayList<String> phoneList = this.readLines(file.getAbsolutePath());
+        ArrayList<String> phoneList = this.readLines("/data/local/tmp/" + fileName);
 
         int i = 0;
         for (String phone : phoneList) {
