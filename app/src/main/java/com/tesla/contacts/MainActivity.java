@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
         // this.startServer();
 
         // 自动触发clear + addContact
-        contactUtils.clearContacts(MainActivity.this);
-        contactUtils.addContact(MainActivity.this, et_fpath.getText().toString().trim());
+        // contactUtils.clearContacts(MainActivity.this);
+        // contactUtils.readContacts(MainActivity.this);
+        contactUtils.addContacts(MainActivity.this, et_fpath.getText().toString().trim());
 
         // 发送收起重启广播 无效 可以直接adb命令发广播 adb shell am broadcast --user 0 android.intent.action.BOOT_COMPLETED
         // RebootUtil.sendRebootBroadcast(MainActivity.this);
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt_import).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                contactUtils.addContact(MainActivity.this, et_fpath.getText().toString().trim());
+                contactUtils.addContacts(MainActivity.this, et_fpath.getText().toString().trim());
             }
         });
         findViewById(R.id.bt_extract).setOnClickListener(new View.OnClickListener() {

@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class ContactUtils {
     private static final String TAG = "ContactUtils";
@@ -42,6 +43,30 @@ public class ContactUtils {
         }
         Log.i(TAG, "clearContacts: finish");
         Toast.makeText(context, "clearContacts finish", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 读取系统联系人信息
+     */
+    public HashSet<String> readContacts(Context context) {
+        HashSet<String> contactSet = new HashSet<>();
+
+        // 通过内容解析者,查询所有系统联系人
+        Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                @SuppressLint("Range") String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                contactSet.add(number);
+                Log.i(TAG, "displayName " + displayName + "number " + number);
+            }
+            cursor.close();
+        }
+
+        Log.i(TAG, "readContacts: finish");
+        Toast.makeText(context, "readContacts finish", Toast.LENGTH_SHORT).show();
+        return contactSet;
     }
 
     /**
@@ -78,13 +103,14 @@ public class ContactUtils {
     /**
      * 插入联系人
      */
-    public void addContact(Context context, String fileName) {
+    public void addContacts(Context context, String fileName) {
         ContentResolver contentResolver = context.getContentResolver();
         File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadDir, fileName);
         // 非root用户adb push后默认root权限无法读取
         // ArrayList<String> phoneList = this.readLines(file.getAbsolutePath());
         ArrayList<String> phoneList = this.readLines("/data/local/tmp/" + fileName);
+        HashSet<String> contactSet = this.readContacts(context);
 
         int i = 0;
         for (String phone : phoneList) {
@@ -92,6 +118,11 @@ public class ContactUtils {
 //            if (!(i >= 0 && i < 400)) {
 //                continue;
 //            }
+
+            // 避免重复插入
+            if(contactSet.contains(phone)){
+                continue;
+            }
 
             ArrayList<ContentProviderOperation> ops = new ArrayList<>();
             ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI).withValue("account_type", null).withValue("account_name", null).build());
@@ -109,7 +140,7 @@ public class ContactUtils {
             }
             i += 1;
         }
-        Log.i(TAG, "addContact: finish");   
+        Log.i(TAG, "addContact: finish");
         Toast.makeText(context, "addContact finish", Toast.LENGTH_SHORT).show();
     }
 }
